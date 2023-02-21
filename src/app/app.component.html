@@ -1,0 +1,92 @@
+<table class="table table-bordered" style="background-color: peachpuff;">
+  <tr style="background-color: brown;color: white;">
+    <th>ID</th>
+    <th>EMAIL</th>
+    <th>FIRST NAME</th>
+    <th>LAST NAME</th>
+    <th>ACTIONS</th>
+  </tr>
+  <tr *ngFor="let item of empData |paginate:{itemsPerPage:6,currentPage:td}">
+    <td>{{item.id}}</td>
+    <td>{{item.email}}</td>
+    <td>{{item.first_name}}</td>
+    <td>{{item.last_name}}</td>
+    <td>
+      <a (click)="editUser(item)"><i class="bi bi-pencil-square"></i></a>&nbsp;
+      <a (click)="delData(item)"><i class="bi bi-trash"></i></a>
+    </td>
+
+  </tr>
+</table>
+<pagination-controls (pageChange)="td = $event" class="chagePageButton"></pagination-controls>
+
+<hr>
+
+
+<form name="myForm" #frm="ngForm" (ngSubmit)="frm.form.valid && onSubmitForm(frm)">
+  <h2>User Registration Form</h2>
+  <br>
+
+  <div>
+    <label for="id">ID :</label>
+    <input type="number" name="id" class="form-control" #id="ngModel" ngModel [(ngModel)]="idNew"
+      placeholder="Enter Your ID" required [ngClass]="{'is-invalid':frm.invalid && id.touched}">
+
+    <div *ngIf="frm.onSubmit && id.invalid" class="invalid-feedback">
+      Id is required
+    </div>
+  </div>
+  <br>
+
+  <div>
+    <label for="email">Email :</label>
+    <input type="email" class="form-control" name="email" #ename="ngModel" ngModel [(ngModel)]="emailNew"
+      placeholder="Enter Email address" required [ngClass]="{'is-invalid':frm.invalid && ename.touched}">
+
+    <div *ngIf="frm.onSubmit && ename.invalid" class="invalid-feedback">
+      Email is required
+    </div>
+
+  </div>
+  <br>
+
+  <div>
+    <label for="firstname">First Name :</label>
+    <input type="text" name="firstname" class="form-control" #fn="ngModel" ngModel [(ngModel)]="firstNameNew"
+      placeholder="Enter Your First Name" required [ngClass]="{'is-invalid':frm.invalid && fn.touched}">
+
+    <div *ngIf="frm.onSubmit && fn.invalid" class="invalid-feedback">
+      First Name is required
+    </div>
+  </div>
+  <br>
+
+  <div>
+    <label>Last Name :</label>
+    <input type="text" class="form-control" name="lastname" #ln="ngModel" ngModel [(ngModel)]="lastNameNew"
+      placeholder="Enter Your Last Name" required [ngClass]="{'is-invalid':frm.invalid && ln.touched}">
+
+    <div *ngIf="frm.onSubmit && ln.invalid" class="invalid-feedback">
+      Last Name is required
+    </div>
+  </div>
+  <br>
+
+
+
+  <br>
+  <br>
+  <div>
+    <button *ngIf="showAddButtonFlag" type="button" class="btn btn-success" (click)="addUser(frm)"
+      [disabled]="frm.invalid">signup</button>
+    &nbsp;&nbsp;
+
+    <!-- <button type="reset" class="btn btn-primary">Reset</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+
+    <button *ngIf="showUpdateButtonFlag" type="button" class="btn btn-warning" (click)="updateUser(frm)">Update
+      User</button>
+
+  </div>
+</form>
+
+<router-outlet></router-outlet>
